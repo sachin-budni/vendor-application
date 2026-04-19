@@ -1,0 +1,94 @@
+# =========================
+# .NET / ASP.NET Core
+# =========================
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+.vs/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+*.nupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+
+# Build results
+[Dd]ebugPublic/
+[Rr]eleases/
+bld/
+log/
+Logs/
+
+# Publish output
+publish/
+wwwroot/
+
+# appsettings overrides (keep base, ignore local/secrets)
+appsettings.Development.json
+appsettings.Production.json
+
+# User secrets
+secrets.json
+
+# =========================
+# Node / Angular (vendor-ui)
+# =========================
+vendor-ui/node_modules/
+vendor-ui/dist/
+vendor-ui/.angular/
+vendor-ui/.sass-cache/
+vendor-ui/tmp/
+vendor-ui/out-tsc/
+vendor-ui/.env
+vendor-ui/.env.local
+
+# npm / yarn
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# =========================
+# IDE / Editor
+# =========================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# =========================
+# Misc
+# =========================
+*.log
+*.tmp
+*.bak
+*.cache
+*.pid
+*.seed
+
+# Generated ER diagram image
+VendorDb_ER_Diagram.png

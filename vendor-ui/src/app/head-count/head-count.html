@@ -1,0 +1,118 @@
+<div class="min-h-screen bg-gray-50/50 p-4 sm:p-6 lg:p-8">
+  <div class="max-w-[95%] mx-auto">
+    <!-- Header -->
+    <div class="sm:flex sm:items-center sm:justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          Head Count Summary
+        </h1>
+        <p class="mt-2 text-sm text-gray-600 border-l-2 border-indigo-200 pl-3">
+          Overview of resource headcounts by contractor and discipline.
+        </p>
+      </div>
+      <div class="mt-4 sm:mt-0 flex gap-3">
+        <button type="button" (click)="exportExcel()" [disabled]="isExporting || isLoading || rows.length === 0"
+          class="inline-flex items-center gap-2 px-4 py-2 border border-green-200 rounded-lg shadow-sm text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+          <lucide-angular [img]="Download" class="w-4 h-4" [class.animate-bounce]="isExporting"></lucide-angular>
+          {{ isExporting ? 'Exporting...' : 'Export Excel' }}
+        </button>
+        <a routerLink="/resources"
+          class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+          <!-- <lucide-angular [img]="ChevronLeft" class="w-4 h-4"></lucide-angular> -->
+          Resources
+        </a>
+      </div>
+    </div>
+
+    <!-- Active Loading State -->
+    <div *ngIf="isLoading"
+      class="bg-white rounded-2xl shadow-sm border border-gray-200 mb-8 p-12 text-center text-gray-500">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+      Loading headcount data...
+    </div>
+
+    <!-- Data Table Container -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8"
+      *ngIf="!isLoading && rows.length > 0">
+      <div class="overflow-x-auto">
+        <table class="min-w-max divide-y divide-gray-300 border-collapse w-full">
+          <thead>
+            <!-- Top header row -->
+            <tr>
+              <th
+                class="p-2 border border-gray-400 bg-yellow-200 text-left font-bold text-gray-900 border-b-2 min-w-[200px] shadow-sm">
+                Decipline
+              </th>
+              <th *ngFor="let disc of disciplines"
+                class="border border-gray-400 bg-orange-50 font-semibold text-gray-900 border-b-2">
+                &nbsp;
+              </th>
+              <th rowspan="2"
+                class="p-2 border border-gray-400 bg-yellow-200 text-center font-bold text-gray-900 w-16 align-bottom shadow-sm">
+                <div class="vertical-text mx-auto h-32 font-bold flex items-center mb-2 text-[15px]">Total<br />(All)
+                </div>
+              </th>
+            </tr>
+
+            <!-- Second header row -->
+            <tr class="bg-orange-50/50">
+              <th
+                class="p-4 border border-gray-400 text-left font-bold text-gray-900 align-bottom pb-4 group-hover:bg-orange-100 transition-colors">
+                Contractors /<br />Disciplines
+              </th>
+              <th *ngFor="let disc of disciplines"
+                class="p-2 border border-gray-400 font-semibold text-gray-900 align-bottom h-48 w-12 hover:bg-orange-100 transition-colors cursor-default">
+                <div class="vertical-text mx-auto tracking-[0.01em] h-[240px] overflow-hidden">
+                  {{ disc }}</div>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-gray-300">
+            <tr *ngFor="let row of rows" class="hover:bg-blue-50/40 transition-colors">
+              <td class="p-3 border border-gray-300 font-bold text-gray-900 bg-orange-50/20 whitespace-nowrap">
+                {{ row.vendorName }}
+              </td>
+              <td *ngFor="let disc of disciplines" class="p-1 border border-gray-300 text-center text-gray-700">
+                <!-- Data cells: Show number, or completely blank if zero to match image -->
+                <div
+                  class="{{ row.counts[disc] ? 'bg-white shadow-sm rounded px-1.5 min-w-[24px] inline-block font-medium' : '' }}">
+                  {{ row.counts[disc] ? row.counts[disc] : '' }}
+                </div>
+              </td>
+              <td class="p-2 border border-gray-300 text-center font-bold text-gray-900 bg-yellow-50/50">
+                {{ row.total }}
+              </td>
+            </tr>
+          </tbody>
+
+          <!-- Bottom Total Row -->
+          <tfoot class="bg-orange-50/50 hidden md:table-footer-group">
+            <tr class="shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]">
+              <td class="p-3 border border-gray-400 font-bold text-gray-900 text-right bg-orange-100/50">
+                Total
+              </td>
+              <td *ngFor="let disc of disciplines"
+                class="p-2 border border-gray-400 text-center font-bold text-gray-900">
+                {{ totalsByDiscipline[disc] || 0 }}
+              </td>
+              <td class="p-2 border border-gray-400 text-center font-bold text-gray-900 bg-yellow-200">
+                {{ grandTotal }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && rows.length === 0"
+      class="bg-white rounded-2xl shadow-sm border border-gray-200 mb-8 p-12 text-center text-gray-500 flex flex-col items-center">
+      <div class="p-4 bg-gray-50 rounded-full mb-4 border border-gray-100 shadow-inner">
+        <lucide-angular [img]="ChevronLeft" class="w-8 h-8 text-gray-300"></lucide-angular>
+      </div>
+      <p class="text-gray-900 font-medium mb-1">No resources found</p>
+      <p>There are no resources available to calculate the headcount.</p>
+    </div>
+  </div>
+</div>
