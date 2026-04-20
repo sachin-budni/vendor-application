@@ -72,9 +72,9 @@ public class ApplicationDbContext : DbContext
                 new User
                 {
                     Id = 1,
-                    Username = "ram",
-                    Email = "ram@company.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("ram123"),
+                    Username = "rock",
+                    Email = "rock@company.com",
+                    PasswordHash = "$2a$11$KBZEoad7.cYHei2xvPXgV.dR4HSwCAVhq1LnxNt8WSRRKct92S9cy", // rock123 hashed
                     RoleId = 1,
                     VendorId = 1,
                     IsActive = true,
@@ -83,11 +83,22 @@ public class ApplicationDbContext : DbContext
                 new User
                 {
                     Id = 2,
-                    Username = "shiva",
-                    Email = "shiva@company.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                    Username = "admin",
+                    Email = "admin@company.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), // admin123 hashed
                     RoleId = 2,
                     VendorId = null,
+                    IsActive = true,
+                    Created = new DateTime(2025, 1, 1)
+                },
+                new User
+                {
+                    Id = 3,
+                    Username = "yoko",
+                    Email = "yoko@company.com",
+                    PasswordHash = "$2a$11$uc.q5i4Lg7CVq7F.QJk0KeUgtPq74lvaFXUW6.cFGTRHXKoWG3HqW", // yok123 hashed
+                    RoleId = 1,
+                    VendorId = 6,
                     IsActive = true,
                     Created = new DateTime(2025, 1, 1)
                 }

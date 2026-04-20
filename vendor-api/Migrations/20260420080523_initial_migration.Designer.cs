@@ -12,8 +12,8 @@ using vendor_api.Data;
 namespace vendor_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260418162759_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260420080523_initial_migration")]
+    partial class initial_migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -555,22 +555,33 @@ namespace vendor_api.Migrations
                         {
                             Id = 1,
                             Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ram@company.com",
+                            Email = "rock@company.com",
                             IsActive = true,
-                            PasswordHash = "$2a$11$OqRafa/PkksFMZrL0pmErebHmtZWsg.dehA3cSdO.wW.JkS8QQPEe",
+                            PasswordHash = "$2a$11$KBZEoad7.cYHei2xvPXgV.dR4HSwCAVhq1LnxNt8WSRRKct92S9cy",
                             RoleId = 1,
-                            Username = "ram",
+                            Username = "rock",
                             VendorId = 1
                         },
                         new
                         {
                             Id = 2,
                             Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "shiva@company.com",
+                            Email = "admin@company.com",
                             IsActive = true,
-                            PasswordHash = "$2a$11$Za7uzwmM3aONCBJTobuoeO8LXJBdl8ECvaH3sPGWdB1Zqk9QcGhz2",
+                            PasswordHash = "$2a$11$JvEHxkVlznRz1oksV9Bs0OLc/kd7NC33Jey1cbm.KNH1NTxjvPdY.",
                             RoleId = 2,
-                            Username = "shiva"
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "yoko@company.com",
+                            IsActive = true,
+                            PasswordHash = "$2a$11$uc.q5i4Lg7CVq7F.QJk0KeUgtPq74lvaFXUW6.cFGTRHXKoWG3HqW",
+                            RoleId = 1,
+                            Username = "yoko",
+                            VendorId = 6
                         });
                 });
 
@@ -607,7 +618,7 @@ namespace vendor_api.Migrations
                             VendorId = 1,
                             Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            VendorName = "Honeywell"
+                            VendorName = "Rockwell"
                         },
                         new
                         {
@@ -635,18 +646,11 @@ namespace vendor_api.Migrations
                             VendorId = 5,
                             Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
-                            VendorName = "Rockwell"
-                        },
-                        new
-                        {
-                            VendorId = 6,
-                            Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsActive = true,
                             VendorName = "Schneider"
                         },
                         new
                         {
-                            VendorId = 7,
+                            VendorId = 6,
                             Created = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsActive = true,
                             VendorName = "Yokogawa"

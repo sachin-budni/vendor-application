@@ -38,13 +38,21 @@ export class HeadCount implements OnInit {
   grandTotal: number = 0;
   isLoading = true;
   isExporting = false;
+  loggedInUsername = '';
+  loggedInVendorName = '';
   readonly ChevronLeft = ChevronLeft;
   readonly Download = Download;
 
   constructor(private resourceService: ResourceService, private authService: AuthService) { }
 
   ngOnInit() {
+    this.loadHeaderIdentity();
     this.fetchResources();
+  }
+
+  loadHeaderIdentity() {
+    this.loggedInUsername = this.authService.getUsername() || '';
+    this.loggedInVendorName = this.authService.getVendorName() || (this.authService.isAdmin() ? 'All Vendors' : '');
   }
 
   fetchResources() {

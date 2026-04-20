@@ -13,33 +13,47 @@
           Complete directory of all contractor resources, assignments, and skill sets.
         </p>
       </div>
-      <div class="flex items-center gap-3">
-        <button type="button" (click)="exportExcel()" [disabled]="isExporting"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-200 rounded-xl shadow-sm bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-100 transition-all disabled:opacity-70 disabled:cursor-not-allowed">
-          @if (isExporting) {
-          <div class="w-4 h-4 border-2 border-slate-300 border-t-indigo-600 rounded-full animate-spin"></div>
-          Exporting...
-          } @else {
-          <lucide-angular [img]="Download" class="w-4 h-4 text-slate-500"></lucide-angular>
-          Export
+      <div class="flex flex-col items-stretch gap-3 md:items-end">
+        <div class="flex flex-wrap items-center gap-3 md:justify-end">
+          <button type="button" (click)="exportExcel()" [disabled]="isExporting"
+            class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-200 rounded-xl shadow-sm bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-100 transition-all disabled:opacity-70 disabled:cursor-not-allowed">
+            @if (isExporting) {
+            <div class="w-4 h-4 border-2 border-slate-300 border-t-indigo-600 rounded-full animate-spin"></div>
+            Exporting...
+            } @else {
+            <lucide-angular [img]="Download" class="w-4 h-4 text-slate-500"></lucide-angular>
+            Export
+            }
+          </button>
+          @if (authService.isAdmin()) {
+          <a routerLink="/head-count"
+            class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-200 rounded-xl shadow-sm bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-100 transition-all">
+            <lucide-angular [img]="User" class="w-4 h-4 text-slate-500"></lucide-angular>
+            Head Count
+          </a>
           }
-        </button>
-        @if (authService.isAdmin()) {
-        <a routerLink="/head-count"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-slate-200 rounded-xl shadow-sm bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-100 transition-all">
-          <lucide-angular [img]="User" class="w-4 h-4 text-slate-500"></lucide-angular>
-          Head Count
-        </a>
-        }
-        <button type="button" (click)="openAddModal()"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-xl shadow-md shadow-indigo-200 text-sm font-semibold hover:from-indigo-700 hover:to-indigo-600 focus:outline-none focus:ring-4 focus:ring-indigo-100 transition-all active:scale-95 border border-transparent">
-          <lucide-angular [img]="Plus" class="w-4 h-4"></lucide-angular>
-          Add Resource
-        </button>
-        <button type="button" (click)="logout()" title="Logout"
-          class="inline-flex items-center gap-2 px-4 py-2.5 ml-2 border border-red-100 rounded-xl shadow-sm bg-red-50 text-sm font-semibold text-red-600 hover:bg-red-100 focus:outline-none focus:ring-4 focus:ring-red-50 transition-all active:scale-95">
-          <lucide-angular [img]="LogOut" class="w-4 h-4"></lucide-angular>
-        </button>
+          <button type="button" (click)="openAddModal()"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-xl shadow-md shadow-indigo-200 text-sm font-semibold hover:from-indigo-700 hover:to-indigo-600 focus:outline-none focus:ring-4 focus:ring-indigo-100 transition-all active:scale-95 border border-transparent">
+            <lucide-angular [img]="Plus" class="w-4 h-4"></lucide-angular>
+            Add Resource
+          </button>
+          @if (loggedInUsername || loggedInVendorName) {
+          <div class="rounded-2xl border border-gray-200 bg-white px-4 py-1 shadow-sm">
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-900 text-[10px] uppercase">{{ loggedInUsername || '-' }}
+              </p>
+            </div>
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-900 text-[10px] uppercase">{{ loggedInVendorName || '-'
+                }}</p>
+            </div>
+          </div>
+          }
+          <button type="button" (click)="logout()" title="Logout"
+            class="inline-flex items-center gap-2 px-4 py-2.5 ml-2 border border-red-100 rounded-xl shadow-sm bg-red-50 text-sm font-semibold text-red-600 hover:bg-red-100 focus:outline-none focus:ring-4 focus:ring-red-50 transition-all active:scale-95">
+            <lucide-angular [img]="LogOut" class="w-4 h-4"></lucide-angular>
+          </button>
+        </div>
       </div>
     </div>
 

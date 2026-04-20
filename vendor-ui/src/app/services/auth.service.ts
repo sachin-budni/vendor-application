@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private readonly AUTH_TOKEN_KEY = 'auth_token';
   private readonly USER_ROLE_KEY = 'user_role';
+  private readonly USERNAME_KEY = 'username';
   private readonly VENDOR_NAME_KEY = 'vendor_name';
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -20,7 +21,13 @@ export class AuthService {
         if (response.success && response.data?.token) {
           localStorage.setItem(this.AUTH_TOKEN_KEY, response.data.token);
           if (response.data.role) localStorage.setItem(this.USER_ROLE_KEY, response.data.role);
+          else localStorage.removeItem(this.USER_ROLE_KEY);
+
+          if (response.data.username) localStorage.setItem(this.USERNAME_KEY, response.data.username);
+          else localStorage.removeItem(this.USERNAME_KEY);
+
           if (response.data.vendorName) localStorage.setItem(this.VENDOR_NAME_KEY, response.data.vendorName);
+          else localStorage.removeItem(this.VENDOR_NAME_KEY);
         }
       })
     );
@@ -29,6 +36,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.AUTH_TOKEN_KEY);
     localStorage.removeItem(this.USER_ROLE_KEY);
+    localStorage.removeItem(this.USERNAME_KEY);
     localStorage.removeItem(this.VENDOR_NAME_KEY);
     this.router.navigate(['/login']);
   }
@@ -41,8 +49,12 @@ export class AuthService {
     return localStorage.getItem(this.USER_ROLE_KEY);
   }
 
+  getUsername(): string | null {
+    return localStorage.getItem(this.USERNAME_KEY) || this.getUsernameFromToken();
+  }
+
   getVendorName(): string | null {
-    return localStorage.getItem(this.VENDOR_NAME_KEY);
+    return localStorage.getItem(this.VENDOR_NAME_KEY) || this.getVendorNameFromToken();
   }
 
   isAdmin(): boolean {
@@ -73,9 +85,18 @@ export class AuthService {
     const token = this.getToken();
     if (!token) return null;
     const payload = this.decodeToken(token);
-    return payload?.VendorId ? parseInt(payload.VendorId) : null;
+    const vendorId = payload?.VendorId || payload?.vendorId;
+    return vendorId ? parseInt(vendorId, 10) : null;
   }
-  
+
+  getUsernameFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    const payload = this.decodeToken(token);
+    return payload?.unique_name || payload?.name || payload?.Username ||
+      payload?.username || payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] || null;
+  }
+
   getVendorNameFromToken(): string | null {
     const token = this.getToken();
     if (!token) return null;

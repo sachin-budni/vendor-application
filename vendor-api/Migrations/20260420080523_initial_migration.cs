@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace vendor_api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class initial_migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -242,13 +242,12 @@ namespace vendor_api.Migrations
                 columns: new[] { "VendorId", "Created", "IsActive", "VendorName" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Honeywell" },
+                    { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Rockwell" },
                     { 2, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Esskay" },
                     { 3, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Emerson" },
                     { 4, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "ABB" },
-                    { 5, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Rockwell" },
-                    { 6, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Schneider" },
-                    { 7, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Yokogawa" }
+                    { 5, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Schneider" },
+                    { 6, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, "Yokogawa" }
                 });
 
             migrationBuilder.InsertData(
@@ -256,8 +255,9 @@ namespace vendor_api.Migrations
                 columns: new[] { "Id", "Created", "Email", "IsActive", "PasswordHash", "RoleId", "Updated", "Username", "VendorId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "ram@company.com", true, "$2a$11$OqRafa/PkksFMZrL0pmErebHmtZWsg.dehA3cSdO.wW.JkS8QQPEe", 1, null, "ram", 1 },
-                    { 2, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "shiva@company.com", true, "$2a$11$Za7uzwmM3aONCBJTobuoeO8LXJBdl8ECvaH3sPGWdB1Zqk9QcGhz2", 2, null, "shiva", null }
+                    { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "rock@company.com", true, "$2a$11$KBZEoad7.cYHei2xvPXgV.dR4HSwCAVhq1LnxNt8WSRRKct92S9cy", 1, null, "rock", 1 },
+                    { 2, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@company.com", true, "$2a$11$JvEHxkVlznRz1oksV9Bs0OLc/kd7NC33Jey1cbm.KNH1NTxjvPdY.", 2, null, "admin", null },
+                    { 3, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "yoko@company.com", true, "$2a$11$uc.q5i4Lg7CVq7F.QJk0KeUgtPq74lvaFXUW6.cFGTRHXKoWG3HqW", 1, null, "yoko", 6 }
                 });
 
             migrationBuilder.CreateIndex(

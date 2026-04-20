@@ -163,6 +163,11 @@ try
 
     app.Run();
 }
+catch (HostAbortedException)
+{
+    // Ignore as it's thrown by EF Core migrations tools to stop the host after building it
+    throw;
+}
 catch (Exception ex)
 {
     Log.Fatal(ex, "Application terminated unexpectedly");

@@ -56,6 +56,8 @@ export class Resources implements OnInit {
   isAddModalOpen = false;
   isExporting = false;
   selectedResource: ResourceResponseDto | null = null;
+  loggedInUsername = '';
+  loggedInVendorName = '';
 
   // Lookup data for select dropdowns
   vendors: any[] = [];
@@ -112,8 +114,14 @@ export class Resources implements OnInit {
   }
 
   ngOnInit() {
+    this.loadHeaderIdentity();
     this.loadLookups();
     this.fetchResources();
+  }
+
+  loadHeaderIdentity() {
+    this.loggedInUsername = this.authService.getUsername() || '';
+    this.loggedInVendorName = this.authService.getVendorName() || (this.authService.isAdmin() ? 'All Vendors' : '');
   }
 
   loadLookups() {
