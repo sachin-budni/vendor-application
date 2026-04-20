@@ -124,9 +124,6 @@ public class ResourcesController : ControllerBase
             worksheet.Cell(currentRow, i + 2).Value = "";
             worksheet.Cell(currentRow, i + 2).Style.Fill.BackgroundColor = ClosedXML.Excel.XLColor.Orange;
         }
-        worksheet.Cell(currentRow, disciplines.Count + 2).Value = "Total (All)";
-        worksheet.Cell(currentRow, disciplines.Count + 2).Style.Font.Bold = true;
-        worksheet.Cell(currentRow, disciplines.Count + 2).Style.Fill.BackgroundColor = ClosedXML.Excel.XLColor.Yellow;
 
         currentRow++;
         worksheet.Cell(currentRow, 1).Value = "Contractors / Disciplines";
@@ -135,7 +132,13 @@ public class ResourcesController : ControllerBase
         {
             worksheet.Cell(currentRow, i + 2).Value = disciplines[i];
             worksheet.Cell(currentRow, i + 2).Style.Font.Bold = true;
+            worksheet.Cell(currentRow, i + 2).Style.Fill.BackgroundColor = ClosedXML.Excel.XLColor.LightGray;
+            worksheet.Cell(currentRow, i + 2).Style.Alignment.TextRotation = 90;
         }
+
+        worksheet.Cell(currentRow, disciplines.Count + 2).Value = "Total (All)";
+        worksheet.Cell(currentRow, disciplines.Count + 2).Style.Font.Bold = true;
+        worksheet.Cell(currentRow, disciplines.Count + 2).Style.Fill.BackgroundColor = ClosedXML.Excel.XLColor.Yellow;
 
         int grandTotal = 0;
         var disciplineTotals = new int[disciplines.Count];
@@ -145,7 +148,7 @@ public class ResourcesController : ControllerBase
             currentRow++;
             worksheet.Cell(currentRow, 1).Value = vendor.VendorName;
             worksheet.Cell(currentRow, 1).Style.Font.Bold = true;
-            
+            worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = ClosedXML.Excel.XLColor.LightGray;
             int vendorTotal = 0;
             for (int i = 0; i < disciplines.Count; i++)
             {
@@ -171,6 +174,7 @@ public class ResourcesController : ControllerBase
         {
             worksheet.Cell(currentRow, i + 2).Value = disciplineTotals[i];
             worksheet.Cell(currentRow, i + 2).Style.Font.Bold = true;
+            worksheet.Cell(currentRow, i + 2).Style.Fill.BackgroundColor = ClosedXML.Excel.XLColor.LightYellow;
         }
         worksheet.Cell(currentRow, disciplines.Count + 2).Value = grandTotal;
         worksheet.Cell(currentRow, disciplines.Count + 2).Style.Font.Bold = true;
