@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { LucideAngularModule, Search, Filter, MoreHorizontal, Download, Plus, ChevronLeft, ChevronRight, User, Pencil, LogOut, ArrowUpDown, ChevronUp, ChevronDown, CheckCircle, Power } from 'lucide-angular';
+import { LucideAngularModule, Search, Filter, MoreHorizontal, Download, Plus, ChevronLeft, ChevronRight, User, Pencil, LogOut, ArrowUpDown, ChevronUp, ChevronDown, CheckCircle, Power, Info } from 'lucide-angular';
 import { AddResource } from '../add-resource/add-resource';
 import { ResourceService } from '../services/resource.service';
 import { AuthService } from '../services/auth.service';
+import { SkillLevelModal } from '../skill-level-modal/app-skill-level-modal';
 
 export interface ResourceResponseDto {
   resourceId: number;
@@ -46,7 +47,7 @@ interface PagedResponse<T> {
 @Component({
   selector: 'app-resources',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, LucideAngularModule, AddResource],
+  imports: [CommonModule, RouterModule, FormsModule, LucideAngularModule, AddResource, SkillLevelModal],
   templateUrl: './resources.html',
 })
 export class Resources implements OnInit {
@@ -58,6 +59,7 @@ export class Resources implements OnInit {
   selectedResource: ResourceResponseDto | null = null;
   loggedInUsername = '';
   loggedInVendorName = '';
+  isSkillModalOpen = false;
 
   // Lookup data for select dropdowns
   vendors: any[] = [];
@@ -87,6 +89,7 @@ export class Resources implements OnInit {
   readonly ChevronDown = ChevronDown;
   readonly CheckCircle = CheckCircle;
   readonly Power = Power;
+  readonly Info = Info;
 
   sortColumn: string = '';
   sortDirection: 'asc' | 'desc' = 'asc';
@@ -298,6 +301,10 @@ export class Resources implements OnInit {
   closeAddModal() {
     this.isAddModalOpen = false;
     this.selectedResource = null;
+  }
+
+  toggleSkillModal() {
+    this.isSkillModalOpen = !this.isSkillModalOpen;
   }
 
   logout() {
