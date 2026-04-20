@@ -235,7 +235,7 @@ public class DisciplineResponseDto
 public class PaginationParams
 {
     private int _pageSize = 10;
-    private const int MaxPageSize = 100;
+    private const int MaxPageSize = 10000;
 
     public int PageNumber { get; set; } = 1;
 
@@ -257,6 +257,9 @@ public class ResourceFilterParams : PaginationParams
     public int? SkillLevelId { get; set; }
     public int? DisciplineId { get; set; }
     public bool? IsActive { get; set; }
+    public string? EngineerName { get; set; }
+    public string? CurrentProjectName { get; set; }
+    public string? ManagerName { get; set; }
 }
 
 public class PagedResponse<T>

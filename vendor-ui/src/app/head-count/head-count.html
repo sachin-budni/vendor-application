@@ -1,10 +1,10 @@
-<div class="min-h-screen bg-gray-50/50 p-4 sm:p-6 lg:p-8">
-  <div class="max-w-[95%] mx-auto">
+<div class="min-h-screen bg-gray-50/50 p-2 sm:p-4 lg:p-6">
+  <div class="mx-auto">
     <!-- Header -->
     <div class="sm:flex sm:items-center sm:justify-between mb-8">
       <div>
         <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          Head Count Summary
+          Head Count
         </h1>
         <p class="mt-2 text-sm text-gray-600 border-l-2 border-indigo-200 pl-3">
           Overview of resource headcounts by contractor and discipline.
@@ -32,24 +32,23 @@
     </div>
 
     <!-- Data Table Container -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-8"
-      *ngIf="!isLoading && rows.length > 0">
-      <div class="overflow-x-auto">
-        <table class="min-w-max divide-y divide-gray-300 border-collapse w-full">
+    <div class="bg-white shadow-sm border border-gray-200 overflow-hidden mb-8" *ngIf="!isLoading && rows.length > 0">
+      <div class="border-b border-gray-100 pb-2">
+        <table class="divide-y divide-gray-300 border-collapse w-full table-auto">
           <thead>
             <!-- Top header row -->
             <tr>
               <th
-                class="p-2 border border-gray-400 bg-yellow-200 text-left font-bold text-gray-900 border-b-2 min-w-[200px] shadow-sm">
-                Decipline
+                class="p-1.5 border border-gray-400 bg-yellow-200 text-left font-bold text-gray-900 border-b-2 min-w-[120px] shadow-sm text-[12px]">
+                Discipline
               </th>
               <th *ngFor="let disc of disciplines"
                 class="border border-gray-400 bg-orange-50 font-semibold text-gray-900 border-b-2">
                 &nbsp;
               </th>
               <th rowspan="2"
-                class="p-2 border border-gray-400 bg-yellow-200 text-center font-bold text-gray-900 w-16 align-bottom shadow-sm">
-                <div class="vertical-text mx-auto h-32 font-bold flex items-center mb-2 text-[15px]">Total<br />(All)
+                class="p-1.5 border border-gray-400 bg-yellow-200 text-center font-bold text-gray-900 w-12 align-bottom shadow-sm">
+                <div class="vertical-text mx-auto h-24 font-bold flex items-center mb-1 text-[13px]">Total<br />(All)
                 </div>
               </th>
             </tr>
@@ -57,12 +56,12 @@
             <!-- Second header row -->
             <tr class="bg-orange-50/50">
               <th
-                class="p-4 border border-gray-400 text-left font-bold text-gray-900 align-bottom pb-4 group-hover:bg-orange-100 transition-colors">
+                class="p-2 border border-gray-400 text-left font-bold text-gray-900 align-bottom pb-2 text-[11px] leading-tight">
                 Contractors /<br />Disciplines
               </th>
               <th *ngFor="let disc of disciplines"
-                class="p-2 border border-gray-400 font-semibold text-gray-900 align-bottom h-48 w-12 hover:bg-orange-100 transition-colors cursor-default">
-                <div class="vertical-text mx-auto tracking-[0.01em] h-[240px] overflow-hidden">
+                class="p-1 border border-gray-400 font-semibold text-gray-900 align-bottom min-w-[30px] hover:bg-orange-100 transition-colors cursor-default">
+                <div class="vertical-text mx-auto tracking-tight h-[180px] overflow-hidden text-[11px]">
                   {{ disc }}</div>
               </th>
             </tr>
@@ -70,7 +69,7 @@
 
           <tbody class="divide-y divide-gray-300">
             <tr *ngFor="let row of rows" class="hover:bg-blue-50/40 transition-colors">
-              <td class="p-3 border border-gray-300 font-bold text-gray-900 bg-orange-50/20 whitespace-nowrap">
+              <td class="p-2 border border-gray-300 font-bold text-gray-900 bg-orange-50/20 text-[12px]">
                 {{ row.vendorName }}
               </td>
               <td *ngFor="let disc of disciplines" class="p-1 border border-gray-300 text-center text-gray-700">
@@ -80,23 +79,23 @@
                   {{ row.counts[disc] ? row.counts[disc] : '' }}
                 </div>
               </td>
-              <td class="p-2 border border-gray-300 text-center font-bold text-gray-900 bg-yellow-50/50">
+              <td class="p-1.5 border border-gray-300 text-center font-bold text-gray-900 bg-yellow-50/50 text-[12px]">
                 {{ row.total }}
               </td>
             </tr>
           </tbody>
 
           <!-- Bottom Total Row -->
-          <tfoot class="bg-orange-50/50 hidden md:table-footer-group">
-            <tr class="shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)]">
-              <td class="p-3 border border-gray-400 font-bold text-gray-900 text-right bg-orange-100/50">
+          <tfoot class="bg-orange-50/50">
+            <tr>
+              <td class="p-2 border border-gray-400 font-bold text-gray-900 text-right bg-orange-100/50 text-[12px]">
                 Total
               </td>
               <td *ngFor="let disc of disciplines"
-                class="p-2 border border-gray-400 text-center font-bold text-gray-900">
+                class="p-1 border border-gray-400 text-center font-bold text-gray-900 text-[12px]">
                 {{ totalsByDiscipline[disc] || 0 }}
               </td>
-              <td class="p-2 border border-gray-400 text-center font-bold text-gray-900 bg-yellow-200">
+              <td class="p-1.5 border border-gray-400 text-center font-bold text-gray-900 bg-yellow-200 text-[12px]">
                 {{ grandTotal }}
               </td>
             </tr>

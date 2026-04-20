@@ -9,10 +9,27 @@ import { environment } from '../../environments/environment';
 export class ResourceService {
   private readonly baseUrl = `${environment.apiUrl}/Resources`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getResources(pageSize: number = 100): Observable<any> {
-    const params = new HttpParams().set('PageSize', pageSize.toString());
+  getResources(filters?: {
+    vendorId?: number,
+    disciplineId?: number,
+    skillLevelId?: number,
+    groupId?: number,
+    isActive?: boolean,
+    engineerName?: string,
+    currentProjectName?: string,
+    managerName?: string
+  }): Observable<any> {
+    let params = new HttpParams().set('PageSize', '1000');
+    if (filters?.vendorId) params = params.set('VendorId', filters.vendorId.toString());
+    if (filters?.disciplineId) params = params.set('DisciplineId', filters.disciplineId.toString());
+    if (filters?.skillLevelId) params = params.set('SkillLevelId', filters.skillLevelId.toString());
+    if (filters?.groupId) params = params.set('GroupId', filters.groupId.toString());
+    if (filters?.isActive !== undefined && filters?.isActive !== null) params = params.set('IsActive', filters.isActive.toString());
+    if (filters?.engineerName) params = params.set('EngineerName', filters.engineerName);
+    if (filters?.currentProjectName) params = params.set('CurrentProjectName', filters.currentProjectName);
+    if (filters?.managerName) params = params.set('ManagerName', filters.managerName);
     return this.http.get<any>(this.baseUrl, { params });
   }
 
@@ -36,19 +53,49 @@ export class ResourceService {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);
   }
 
-  exportToExcel(vendorId?: number): Observable<Blob> {
-    let params = new HttpParams().set('PageSize', '100');
-    if (vendorId) {
-      params = params.set('VendorId', vendorId.toString());
-    }
+  exportToExcel(filters?: {
+    vendorId?: number,
+    disciplineId?: number,
+    skillLevelId?: number,
+    groupId?: number,
+    isActive?: boolean,
+    engineerName?: string,
+    currentProjectName?: string,
+    managerName?: string
+  }): Observable<Blob> {
+    let params = new HttpParams().set('PageSize', '10000');
+    if (filters?.vendorId) params = params.set('VendorId', filters.vendorId.toString());
+    if (filters?.disciplineId) params = params.set('DisciplineId', filters.disciplineId.toString());
+    if (filters?.skillLevelId) params = params.set('SkillLevelId', filters.skillLevelId.toString());
+    if (filters?.groupId) params = params.set('GroupId', filters.groupId.toString());
+    if (filters?.isActive !== undefined && filters?.isActive !== null) params = params.set('IsActive', filters.isActive.toString());
+    if (filters?.engineerName) params = params.set('EngineerName', filters.engineerName);
+    if (filters?.currentProjectName) params = params.set('CurrentProjectName', filters.currentProjectName);
+    if (filters?.managerName) params = params.set('ManagerName', filters.managerName);
+
     return this.http.get(`${this.baseUrl}/export`, { params, responseType: 'blob' });
   }
 
-  exportHeadCountToExcel(vendorId?: number): Observable<Blob> {
-    let params = new HttpParams().set('PageSize', '1000');
-    if (vendorId) {
-      params = params.set('VendorId', vendorId.toString());
-    }
+  exportHeadCountToExcel(filters?: {
+    vendorId?: number,
+    disciplineId?: number,
+    skillLevelId?: number,
+    groupId?: number,
+    isActive?: boolean,
+    engineerName?: string,
+    currentProjectName?: string,
+    managerName?: string
+  }): Observable<Blob> {
+    let params = new HttpParams().set('PageSize', '10000');
+    if (filters?.vendorId) params = params.set('VendorId', filters.vendorId.toString());
+    if (filters?.disciplineId) params = params.set('DisciplineId', filters.disciplineId.toString());
+    if (filters?.skillLevelId) params = params.set('SkillLevelId', filters.skillLevelId.toString());
+    if (filters?.groupId) params = params.set('GroupId', filters.groupId.toString());
+    if (filters?.isActive !== undefined && filters?.isActive !== null) params = params.set('IsActive', filters.isActive.toString());
+    if (filters?.engineerName) params = params.set('EngineerName', filters.engineerName);
+    if (filters?.currentProjectName) params = params.set('CurrentProjectName', filters.currentProjectName);
+    if (filters?.managerName) params = params.set('ManagerName', filters.managerName);
+
     return this.http.get(`${this.baseUrl}/export-headcount`, { params, responseType: 'blob' });
   }
 

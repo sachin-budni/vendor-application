@@ -379,7 +379,8 @@ public class ResourceService : IResourceService
 
         var (resources, totalCount) = await _resourceRepository.GetAllAsync(
             p.PageNumber, p.PageSize, p.SearchTerm, p.SortBy, p.SortOrder,
-            effectiveVendorId, p.GroupId, p.SkillLevelId, p.IsActive);
+            effectiveVendorId, p.GroupId, p.SkillLevelId, p.IsActive,
+            p.DisciplineId, p.EngineerName, p.CurrentProjectName, p.ManagerName);
 
         return new PagedResponse<ResourceResponseDto>
         {

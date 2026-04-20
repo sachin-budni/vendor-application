@@ -57,6 +57,19 @@ export class Resources implements OnInit {
   isExporting = false;
   selectedResource: ResourceResponseDto | null = null;
 
+  // Lookup data for select dropdowns
+  vendors: any[] = [];
+  disciplines: any[] = [];
+  skillLevels: any[] = [];
+  groups: any[] = [];
+
+  // API filter selections (by ID)
+  selectedVendorId: number | null = null;
+  selectedDisciplineId: number | null = null;
+  selectedSkillLevelId: number | null = null;
+  selectedGroupId: number | null = null;
+  selectedIsActive: string = '';
+
   readonly Search = Search;
   readonly Filter = Filter;
   readonly MoreHorizontal = MoreHorizontal;
@@ -99,12 +112,43 @@ export class Resources implements OnInit {
   }
 
   ngOnInit() {
+    this.loadLookups();
     this.fetchResources();
+  }
+
+  loadLookups() {
+    this.resourceService.getVendors().subscribe({
+      next: (res) => { if (res.success) this.vendors = res.data; }
+    });
+    this.resourceService.getDisciplines().subscribe({
+      next: (res) => { if (res.success) this.disciplines = res.data; }
+    });
+    this.resourceService.getSkillLevels().subscribe({
+      next: (res) => { if (res.success) this.skillLevels = res.data; }
+    });
+    this.resourceService.getGroups().subscribe({
+      next: (res) => { if (res.success) this.groups = res.data; }
+    });
   }
 
   fetchResources() {
     this.isLoading = true;
-    this.resourceService.getResources().subscribe({
+
+    // Build API filter params
+    const apiFilters: any = {};
+    if (this.selectedVendorId) apiFilters.vendorId = this.selectedVendorId;
+    if (this.selectedDisciplineId) apiFilters.disciplineId = this.selectedDisciplineId;
+    if (this.selectedSkillLevelId) apiFilters.skillLevelId = this.selectedSkillLevelId;
+    if (this.selectedGroupId) apiFilters.groupId = this.selectedGroupId;
+    if (this.selectedIsActive === 'true') apiFilters.isActive = true;
+    if (this.selectedIsActive === 'false') apiFilters.isActive = false;
+
+    // Text-based API filters
+    if (this.filters['engineerName']) apiFilters.engineerName = this.filters['engineerName'];
+    if (this.filters['currentProjectName']) apiFilters.currentProjectName = this.filters['currentProjectName'];
+    if (this.filters['managerName']) apiFilters.managerName = this.filters['managerName'];
+
+    this.resourceService.getResources(apiFilters).subscribe({
       next: (response) => {
         if (response.success && response.data) {
           this.resources = response.data.data;
@@ -117,6 +161,10 @@ export class Resources implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  onApiFilterChange() {
+    this.fetchResources();
   }
 
   toggleSort(column: string) {
@@ -135,6 +183,9 @@ export class Resources implements OnInit {
     let result = this.resources.filter(res => {
       let matches = true;
       for (const col of this.columns) {
+        // Skip columns handled by API
+        if (['vendorName', 'disciplineName', 'skillCode', 'groupName', 'isActive', 'engineerName', 'currentProjectName', 'managerName'].includes(col.key)) continue;
+
         const filterVal = this.filters[col.key]?.toLowerCase();
         if (filterVal) {
           const val = (res as any)[col.key];
@@ -166,15 +217,26 @@ export class Resources implements OnInit {
     this.filteredResources = result;
   }
 
-  onFilterChange() {
-    this.applyFiltersAndSort();
+  onFilterChange(columnKey: string) {
+    if (['engineerName', 'currentProjectName', 'managerName'].includes(columnKey)) {
+      this.fetchResources();
+    } else {
+      this.applyFiltersAndSort();
+    }
   }
 
   clearFilters() {
+    // Clear client-side text filters
     Object.keys(this.filters).forEach(k => this.filters[k] = '');
+    // Clear API dropdown filters
+    this.selectedVendorId = null;
+    this.selectedDisciplineId = null;
+    this.selectedSkillLevelId = null;
+    this.selectedGroupId = null;
+    this.selectedIsActive = '';
     this.sortColumn = '';
     this.sortDirection = 'asc';
-    this.applyFiltersAndSort();
+    this.fetchResources();
   }
 
   openAddModal() {
@@ -189,13 +251,29 @@ export class Resources implements OnInit {
 
   exportExcel() {
     this.isExporting = true;
-    const vId = this.authService.getVendorIdFromToken() || undefined;
-    this.resourceService.exportToExcel(vId).subscribe({
+
+    // Build current filter object
+    const apiFilters: any = {};
+    const vId = this.authService.getVendorIdFromToken();
+    if (vId) apiFilters.vendorId = vId;
+    else if (this.selectedVendorId) apiFilters.vendorId = this.selectedVendorId;
+
+    if (this.selectedDisciplineId) apiFilters.disciplineId = this.selectedDisciplineId;
+    if (this.selectedSkillLevelId) apiFilters.skillLevelId = this.selectedSkillLevelId;
+    if (this.selectedGroupId) apiFilters.groupId = this.selectedGroupId;
+    if (this.selectedIsActive === 'true') apiFilters.isActive = true;
+    if (this.selectedIsActive === 'false') apiFilters.isActive = false;
+
+    if (this.filters['engineerName']) apiFilters.engineerName = this.filters['engineerName'];
+    if (this.filters['currentProjectName']) apiFilters.currentProjectName = this.filters['currentProjectName'];
+    if (this.filters['managerName']) apiFilters.managerName = this.filters['managerName'];
+
+    this.resourceService.exportToExcel(apiFilters).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'Resources.xlsx';
+        a.download = `Resources_Export_${new Date().toISOString().slice(0, 10)}.xlsx`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);

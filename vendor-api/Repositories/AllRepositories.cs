@@ -31,7 +31,9 @@ public interface IResourceRepository
 {
     Task<(IEnumerable<Resource> Resources, int TotalCount)> GetAllAsync(
         int pageNumber, int pageSize, string? searchTerm, string? sortBy, string sortOrder,
-        int? vendorId = null, int? groupId = null, int? skillLevelId = null, bool? isActive = null);
+        int? vendorId = null, int? groupId = null, int? skillLevelId = null, bool? isActive = null,
+        int? disciplineId = null, string? engineerName = null, string? currentProjectName = null,
+        string? managerName = null);
     Task<Resource?> GetByIdAsync(int id);
     Task<Resource> CreateAsync(Resource resource);
     Task UpdateAsync(Resource resource);
@@ -219,7 +221,9 @@ public class ResourceRepository : IResourceRepository
 
     public async Task<(IEnumerable<Resource> Resources, int TotalCount)> GetAllAsync(
         int pageNumber, int pageSize, string? searchTerm, string? sortBy, string sortOrder,
-        int? vendorId = null, int? groupId = null, int? skillLevelId = null, bool? isActive = null)
+        int? vendorId = null, int? groupId = null, int? skillLevelId = null, bool? isActive = null,
+        int? disciplineId = null, string? engineerName = null, string? currentProjectName = null,
+        string? managerName = null)
     {
         var query = _context.Resources
             .Include(r => r.Vendor)
@@ -237,6 +241,15 @@ public class ResourceRepository : IResourceRepository
             query = query.Where(r => r.SkillLevelId == skillLevelId.Value);
         if (isActive.HasValue)
             query = query.Where(r => r.IsActive == isActive.Value);
+        if (disciplineId.HasValue)
+            query = query.Where(r => r.DisciplineId == disciplineId.Value);
+
+        if (!string.IsNullOrWhiteSpace(engineerName))
+            query = query.Where(r => r.EngineerName.ToLower().Contains(engineerName.ToLower()));
+        if (!string.IsNullOrWhiteSpace(currentProjectName))
+            query = query.Where(r => r.CurrentProjectName != null && r.CurrentProjectName.ToLower().Contains(currentProjectName.ToLower()));
+        if (!string.IsNullOrWhiteSpace(managerName))
+            query = query.Where(r => r.ManagerName != null && r.ManagerName.ToLower().Contains(managerName.ToLower()));
 
         // Search
         if (!string.IsNullOrWhiteSpace(searchTerm))

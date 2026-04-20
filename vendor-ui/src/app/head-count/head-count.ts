@@ -132,7 +132,7 @@ export class HeadCount implements OnInit {
   exportExcel() {
     this.isExporting = true;
     const vId = this.authService.getVendorIdFromToken() || undefined;
-    this.resourceService.exportHeadCountToExcel(vId).subscribe({
+    this.resourceService.exportHeadCountToExcel({ vendorId: vId }).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
